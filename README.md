@@ -83,6 +83,10 @@ src/
 
 Keep videos web-optimised (H.264, ≤1080p, reasonable bitrate): they autoplay, so file size drives load time.
 
+## License
+
+Code is released under the [MIT License](LICENSE). The videos and other media are © Stefano D'Ambrosio and are not covered by the license.
+
 ## Author
 
 **Stefano D'Ambrosio**: [GitHub](https://github.com/Stedamb)
