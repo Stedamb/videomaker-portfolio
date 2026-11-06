@@ -26,5 +26,8 @@
   "devDependencies": {
     "@types/js-cookie": "^3.0.6"
   },
-  "packageManager": "pnpm@11.17.0"
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=22.12.0"
+  }
 }
