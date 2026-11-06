@@ -1,12 +1,12 @@
 @import url(./fonts.css);
 
 body {
-    font-family: 'Courier Prime';
+    font-family: 'Courier Prime', 'Courier Prime Fallback', monospace;
     font-weight: 500;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'MS Mincho';
+    font-family: 'MS Mincho', 'MS Mincho Fallback', serif;
     font-weight: 700;
 }
 
