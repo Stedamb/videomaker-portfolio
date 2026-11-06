@@ -5,9 +5,23 @@
 @import url(./multimedia.css);
 @import url(./typography.css);
 
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
+@import "tailwindcss";
+
+@theme {
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-tertairy: var(--tertairy);
+    --color-text: var(--text);
+    --color-background: var(--background);
+    --color-accent: var(--accent);
+    --color-shadow: var(--shadow);
+
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+}
 
 :root {
     color-scheme: light dark;
