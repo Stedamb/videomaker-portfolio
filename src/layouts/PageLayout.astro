@@ -1,24 +1,50 @@
 ---
+import { ClientRouter } from "astro:transitions";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
 import Cursor from "../components/Cursor";
+import { cinematic } from "../scripts/transitions";
 
 import '../styles/index.css';
 
-const { title } = Astro.props;
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const siteName = "Stefano D'Ambrosio — Video Journal";
+const {
+	title,
+	description = "Un video-diario di viaggi, avventure ed esperimenti di videomaking.",
+} = Astro.props;
 ---
 
-<html lang="it">
+<html lang="it" transition:animate={cinematic}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
 		<meta name="generator" content={Astro.generator} />
+		<title>{title ? `${title} | ${siteName}` : siteName}</title>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preload" href="/fonts/CourierPrime-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/MS-Mincho-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<script is:inline>
+			// Hide the intro loader before first paint (and after every client-side swap) once it has been seen.
+			(() => {
+				const mark = () => {
+					if (document.cookie.includes('loaderSeen=')) document.documentElement.classList.add('loader-seen');
+				};
+				mark();
+				document.addEventListener('astro:after-swap', mark);
+			})();
+		</script>
+		<ClientRouter />
 	</head>
 	<body>
-		<Cursor client:only />
-		<nav><Navbar client:visible /></nav>
+		<Cursor client:only="react" transition:persist="cursor" />
+		<nav transition:name="site-nav" transition:animate="none"><Navbar client:visible /></nav>
 		<slot />
 		<footer><Footer client:visible /></footer>
 	</body>

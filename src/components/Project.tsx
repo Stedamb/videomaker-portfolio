@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
+import { videoTransitionName } from '../scripts/transitions';
 
 const Project = ({ video }: { video: Video }) => {
     const [fullscreen, setFullscreen] = useState<boolean>(false);
@@ -14,13 +15,14 @@ const Project = ({ video }: { video: Video }) => {
                 : 'h-[50vh] lg:h-[75vh] lazyload'
                 }`}
                 onClick={fullscreen ? undefined : handleVideoClick}
+                style={{ viewTransitionName: videoTransitionName(video.link), viewTransitionClass: 'video-morph' } as CSSProperties}
             >
-                <video className='rounded-xl w-full max-h-screen' controls={fullscreen} autoPlay muted loop>
+                <video className='rounded-xl w-full max-h-screen' controls={fullscreen} autoPlay muted loop playsInline preload="metadata">
                     <source src={video.source} type="video/mp4" />
                     Sorry, your browser doesn't support videos.
                 </video>
                 <div
-                    className={`${fullscreen ? 'fixed top-10 right-10 z-50' : 'hidden'}`}
+                    className={`${fullscreen ? 'cursor-hover fixed top-10 right-10 z-50' : 'hidden'}`}
                     onClick={handleVideoClick}>
                     Chiudi
                 </div>

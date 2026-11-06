@@ -4,6 +4,7 @@
 @import url(./container.css);
 @import url(./multimedia.css);
 @import url(./typography.css);
+@import url(./transitions.css);
 
 @import "tailwindcss";
 

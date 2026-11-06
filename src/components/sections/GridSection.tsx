@@ -1,3 +1,6 @@
+import type { CSSProperties } from "react";
+import { videoTransitionName } from "../../scripts/transitions";
+
 const GridSection = ({ videos }: { videos: Video[] }) => {
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const captionElement = event.currentTarget.querySelector('.Caption');
@@ -10,13 +13,14 @@ const GridSection = ({ videos }: { videos: Video[] }) => {
     <div className="GridSection py-1">
       <h3 className="text-center">ESPLORA</h3>
       <p className=""></p>
-      <div className="grid grid-cols-2 gap-4 pt-2 pb-8">
+      <div className="grid grid-cols-2 auto-rows-[clamp(9rem,28vw,22rem)] gap-4 pt-2 pb-8">
         {videos.map((video, index) => (
           <div
             key={video.source}
             className={`lazyload rounded-xl ${(index % 4 === 0 || index % 6 === 0) ? 'row-span-2' : ''} ${(index % 6 === 0 && index != 0) ? 'col-span-2' : ''}`}
-            onClick={handleClick}>
-            <video className="cursor-hover rounded-xl" autoPlay muted loop>
+            onClick={handleClick}
+            style={{ viewTransitionName: videoTransitionName(video.link), viewTransitionClass: 'video-morph' } as CSSProperties}>
+            <video className="cursor-hover rounded-xl" autoPlay muted loop playsInline preload="metadata">
               <source src={video.source} type="video/mp4" />
               Sorry, your browser doesn't support videos.
             </video>

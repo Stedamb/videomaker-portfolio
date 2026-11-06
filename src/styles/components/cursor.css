@@ -1,63 +1,105 @@
-.cursor-dot,
-.cursor-dot-outline {
-    pointer-events: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    opacity: 1;
-    z-index: 1;
+/* Custom cursor (src/components/Cursor.tsx). State comes from data attributes on .Cursor. */
 
-    @media screen and (max-width: 768px) {
-        display: none;
+/* Hide the native cursor only while the custom one is active (fine pointer + JS running). */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+    cursor: none !important;
+}
+
+/* Native fullscreen renders in the top layer, above the custom cursor: keep the system one there. */
+html.has-custom-cursor :fullscreen,
+html.has-custom-cursor :fullscreen * {
+    cursor: auto !important;
+}
+
+.Cursor {
+    --cursor-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    &[data-visible="true"] {
+        opacity: 1;
     }
 }
 
-.cursor-dot {
+/* Positioned by JS via transform; children handle their own scale so transforms never clash. */
+.Cursor-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.Cursor-ring {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transition:
+        transform 0.3s var(--cursor-ease),
+        background-color 0.3s ease;
+}
+
+.Cursor-dot {
     width: 8px;
     height: 8px;
-    background-color: white;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, border 0.1s linear;
+    margin: -4px 0 0 -4px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s var(--cursor-ease);
+}
 
+.Cursor-icon {
+    grid-area: 1 / 1;
+    width: 18px;
+    height: 18px;
+    fill: #202020;
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+        opacity 0.2s ease,
+        transform 0.3s var(--cursor-ease);
+}
 
-    &.hovering {
-        width: 0;
-        background-color: transparent;
-        border: 0;
-        border-radius: 0;
-        border-style: solid;
-        height: 26px;
+/* Hovering something interactive: filled, enlarged ring; the dot disappears into it. */
+.Cursor:not([data-mode="default"]) {
+    .Cursor-ring {
+        background-color: rgb(255 255 255 / 0.9);
+        transform: scale(1.5);
+    }
 
-        &.play {
-            border-color: transparent transparent transparent #202020;
-            border-width: 13px 0 13px 26px;
-        }
-
-        &.pause {
-            border-color: transparent transparent transparent #202020;
-            border-style: double;
-            border-width: 0 0 0 20px;
-        }
-
+    .Cursor-dot {
+        transform: scale(0);
     }
 }
 
-.cursor-dot-outline {
-    background-color: transparent;
-    border: 2px solid #fff;
-    height: 40px;
-    transition: opacity 0.3s ease-in-out, transform 0.05s ease-in-out, background-color 0.3s ease-in-out;
-    width: 40px;
+.Cursor[data-mode="play"] .Cursor-icon--play,
+.Cursor[data-mode="pause"] .Cursor-icon--pause {
+    opacity: 1;
+    transform: scale(1);
+}
 
-    &.clicking {
-        transform: translate(-50%, -50%) scale(0.5, 0.5);
-    }
+/* Press feedback */
+.Cursor[data-pressed="true"] .Cursor-ring {
+    transform: scale(0.6);
+}
 
-    &.hovering {
-        background-color: #fff;
-        transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
-        opacity: .9;
-        transform: translate(-50%, -50%) scale(1.5, 1.5);
+.Cursor[data-pressed="true"]:not([data-mode="default"]) .Cursor-ring {
+    transform: scale(1.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .Cursor-ring,
+    .Cursor-dot,
+    .Cursor-icon {
+        transition: none;
     }
 }

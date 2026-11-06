@@ -1,4 +1,5 @@
 .lazyload { 
+    isolation: isolate;
     position: relative;
 
     > img, video { 

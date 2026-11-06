@@ -1,0 +1,65 @@
+/* Page transitions (used by `cinematic` in src/scripts/transitions.ts) */
+
+@keyframes vtRecede {
+    to {
+        opacity: 0;
+        transform: scale(0.96);
+        filter: blur(6px);
+    }
+}
+
+@keyframes vtRise {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(1.02);
+        filter: blur(6px);
+    }
+}
+
+@keyframes vtSink {
+    to {
+        opacity: 0;
+        transform: translateY(24px) scale(1.02);
+        filter: blur(6px);
+    }
+}
+
+@keyframes vtReturn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+        filter: blur(6px);
+    }
+}
+
+/* Shared video morph between grid tile and project page */
+::view-transition-group(*) {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-old(.video-morph),
+::view-transition-new(.video-morph) {
+    height: 100%;
+    object-fit: cover;
+    overflow: clip;
+}
+
+::view-transition-group(.video-morph) {
+    border-radius: 0.75rem;
+    overflow: clip;
+    z-index: 10;
+}
+
+/* Intro loader is skipped once seen (class set by the inline script in PageLayout) */
+.loader-seen .Loader {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
+}
